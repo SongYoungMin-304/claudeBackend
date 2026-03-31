@@ -8,11 +8,11 @@ import jakarta.persistence.Table
 
 @Entity
 @Table(name = "users")
-data class User(
+class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    val name: String,
-    val email: String,
-    val password: String
+    val name: String = "",
+    val email: String = "",
+    val password: String = ""
 )
