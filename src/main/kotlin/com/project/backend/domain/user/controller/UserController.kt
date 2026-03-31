@@ -1,10 +1,8 @@
 package com.project.backend.domain.user.controller
 
-import com.project.backend.domain.user.entity.User
 import com.project.backend.domain.user.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -15,22 +13,22 @@ class UserController(private val userService: UserService) {
 
     @GetMapping
     @Operation(summary = "모든 사용자 조회", description = "등록된 모든 사용자를 조회합니다.")
-    fun getAllUsers(): ResponseEntity<List<User>> {
-        return ResponseEntity.ok(userService.getAllUsers())
+    fun getAllUsers(): ResponseEntity<List<Map<String, Any>>> {
+        val users = userService.getAllUsers().map {
+            mapOf("id" to it.id, "name" to it.name, "email" to it.email)
+        }
+        return ResponseEntity.ok(users)
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "사용자 조회", description = "ID로 특정 사용자를 조회합니다.")
-    fun getUserById(@PathVariable id: Long): ResponseEntity<User> {
+    fun getUserById(@PathVariable id: Long): ResponseEntity<Map<String, Any>> {
         val user = userService.getUserById(id)
-        return if (user != null) ResponseEntity.ok(user) else ResponseEntity.notFound().build()
-    }
-
-    @PostMapping
-    @Operation(summary = "사용자 생성", description = "새로운 사용자를 생성합니다.")
-    fun createUser(@RequestBody request: CreateUserRequest): ResponseEntity<User> {
-        val user = userService.createUser(request.name, request.email)
-        return ResponseEntity.status(HttpStatus.CREATED).body(user)
+        return if (user != null) {
+            ResponseEntity.ok(mapOf("id" to user.id, "name" to user.name, "email" to user.email))
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -43,8 +41,3 @@ class UserController(private val userService: UserService) {
         }
     }
 }
-
-data class CreateUserRequest(
-    val name: String,
-    val email: String
-)

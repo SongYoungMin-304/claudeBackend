@@ -14,7 +14,7 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(mapOf(
                 "error" to "Bad Request",
-                "message" to e.message
+                "message" to (e.message ?: "Unknown error")
             ))
     }
 
