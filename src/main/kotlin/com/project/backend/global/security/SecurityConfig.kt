@@ -43,6 +43,8 @@ class SecurityConfig(
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/hello").permitAll()
                     .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                    .requestMatchers("/api/v1/posts/{postId}/comments", "/api/v1/posts/{postId}/comments/count").permitAll()
+                    .requestMatchers("/api/v1/posts/**").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
