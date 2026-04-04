@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository
 @Repository
 interface CommentRepository : JpaRepository<Comment, Long> {
     fun findByPostIdOrderByCreatedAtDesc(postId: Long): List<Comment>
+    fun findByParentIdOrderByCreatedAtAsc(parentId: Long): List<Comment>
     fun countByPostId(postId: Long): Long
     fun findByIdAndAuthorId(commentId: Long, authorId: Long): Comment?
+    fun findByPostIdAndParentIdIsNullOrderByCreatedAtDesc(postId: Long): List<Comment>
 }

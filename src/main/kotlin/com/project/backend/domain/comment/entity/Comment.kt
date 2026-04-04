@@ -16,6 +16,9 @@ class Comment(
     @Column(name = "author_id", nullable = false)
     val authorId: Long,
 
+    @Column(name = "parent_id")
+    val parentId: Long? = null,
+
     @Column(nullable = false, columnDefinition = "TEXT")
     var content: String,
 
@@ -29,14 +32,16 @@ class Comment(
         id = 0,
         postId = 0,
         authorId = 0,
+        parentId = null,
         content = "",
         createdAt = LocalDateTime.now(),
         updatedAt = null
     )
 
-    constructor(postId: Long, authorId: Long, content: String) : this(
+    constructor(postId: Long, authorId: Long, content: String, parentId: Long? = null) : this(
         postId = postId,
         authorId = authorId,
+        parentId = parentId,
         content = content,
         createdAt = LocalDateTime.now(),
         updatedAt = null
