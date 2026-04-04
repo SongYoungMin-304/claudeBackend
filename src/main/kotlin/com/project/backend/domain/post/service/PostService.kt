@@ -1,5 +1,7 @@
 package com.project.backend.domain.post.service
 
+import com.project.backend.domain.post.dto.PostNavItem
+import com.project.backend.domain.post.dto.PostNavigationResponse
 import com.project.backend.domain.post.entity.Post
 import com.project.backend.domain.post.repository.PostRepository
 import org.springframework.stereotype.Service
@@ -40,4 +42,20 @@ class PostService(private val postRepository: PostRepository) {
             false
         }
     }
+
+    fun getPostNavigation(postId: Long): PostNavigationResponse {
+        if (!postRepository.existsById(postId)) {
+            throw PostNotFoundException("게시글을 찾을 수 없습니다")
+        }
+
+        val prevPost = postRepository.findPrevPost(postId)
+        val nextPost = postRepository.findNextPost(postId)
+
+        return PostNavigationResponse(
+            prev = prevPost?.let { PostNavItem(id = it.id, title = it.title, createdAt = it.createdAt) },
+            next = nextPost?.let { PostNavItem(id = it.id, title = it.title, createdAt = it.createdAt) }
+        )
+    }
 }
+
+class PostNotFoundException(message: String) : RuntimeException(message)

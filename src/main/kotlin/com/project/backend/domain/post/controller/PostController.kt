@@ -1,5 +1,6 @@
 package com.project.backend.domain.post.controller
 
+import com.project.backend.domain.post.dto.PostNavigationResponse
 import com.project.backend.domain.post.entity.Post
 import com.project.backend.domain.post.service.PostService
 import io.swagger.v3.oas.annotations.Operation
@@ -24,6 +25,17 @@ class PostController(private val postService: PostService) {
     fun getPostById(@PathVariable id: Long): ResponseEntity<Post> {
         val post = postService.getPostById(id)
         return if (post != null) ResponseEntity.ok(post) else ResponseEntity.notFound().build()
+    }
+
+    @GetMapping("/{id}/navigation")
+    @Operation(summary = "이전글/다음글 조회", description = "현재 게시글의 이전글과 다음글 정보를 조회합니다.")
+    fun getPostNavigation(@PathVariable id: Long): ResponseEntity<PostNavigationResponse> {
+        return try {
+            val navigation = postService.getPostNavigation(id)
+            ResponseEntity.ok(navigation)
+        } catch (e: Exception) {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @PostMapping
