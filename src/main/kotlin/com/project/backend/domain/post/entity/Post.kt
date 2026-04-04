@@ -23,7 +23,10 @@ class Post(
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "updated_at")
-    var updatedAt: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "like_count", nullable = false)
+    var likeCount: Long = 0
 ) {
     constructor(title: String, content: String, author: String) : this(
         title = title,

@@ -26,7 +26,10 @@ class Comment(
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "updated_at")
-    var updatedAt: LocalDateTime? = null
+    var updatedAt: LocalDateTime? = null,
+
+    @Column(name = "like_count", nullable = false)
+    var likeCount: Long = 0
 ) {
     protected constructor() : this(
         id = 0,
@@ -35,7 +38,8 @@ class Comment(
         parentId = null,
         content = "",
         createdAt = LocalDateTime.now(),
-        updatedAt = null
+        updatedAt = null,
+        likeCount = 0
     )
 
     constructor(postId: Long, authorId: Long, content: String, parentId: Long? = null) : this(
